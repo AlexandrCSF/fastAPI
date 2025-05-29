@@ -7,3 +7,5 @@ isort==6.0.1
 pre-commit==4.2.0
 sqlalchemy==2.0.41
 aiomysql==0.2.0
+mysqlclient==2.2.7
+alembic==1.16.1
