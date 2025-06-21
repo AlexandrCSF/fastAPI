@@ -8,6 +8,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from db.base_class import Base
+from core.config import config as default_settings, env
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -16,6 +17,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
+
+database_url = env("SYNC_DATABASE_URL")
+if database_url:
+    config.set_main_option('sqlalchemy.url',database_url)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
