@@ -1,3 +1,5 @@
+from sqlalchemy import select
+
 from src.authorization.models import UserModel
 from src.utils.service import BaseCRUDService
 
@@ -5,4 +7,12 @@ from src.utils.service import BaseCRUDService
 class UserService(BaseCRUDService):
     pass
 
+class TokenService:
+    async def gen_token(self, db, uuid):
+        user = await db.execute(select(UserModel).where(UserModel.uuid == uuid))
+        user = user.scalar_one_or_none()
+        if user is None:
+
+
+token_service = TokenService()
 user_service = UserService(UserModel)

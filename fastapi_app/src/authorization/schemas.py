@@ -12,3 +12,12 @@ class UserDTO(BaseModel):
     is_verified: bool
     created_at: datetime
     updated_at: datetime
+
+class RequestTokenDTO(BaseModel):
+    user_uuid: str
+
+class ResponseTokenDTO(BaseModel):
+    access_token: str
+    refresh_token: str
+    user_id: int
+    user_uuid: str
