@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class UserDTO(BaseModel):
@@ -12,6 +12,13 @@ class UserDTO(BaseModel):
     is_verified: bool
     created_at: datetime
     updated_at: datetime
+
+class CreateUserDTO(BaseModel):
+    uuid: str
+    first_name: str
+    last_name: str
+    username: str
+    is_verified: bool = Field(default=True)
 
 class RequestTokenDTO(BaseModel):
     user_uuid: str
