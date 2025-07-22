@@ -14,10 +14,9 @@ class BaseCRUDService:
         return result.scalar_one()
     #TODO: Дописать
     async def create(self,db: AsyncSession, obj):
-        return
         obj_in_data = jsonable_encoder(obj)
         db_obj = self.model(**obj_in_data)
-        db_session.add(db_obj)
-        db_session.commit()
-        db_session.refresh(db_obj)
+        db.add(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
         return db_obj
