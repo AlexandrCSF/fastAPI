@@ -12,7 +12,7 @@ class BaseCRUDService:
     async def get(self, db: AsyncSession, id: int):
         result = await db.execute(select(self.model).where(self.model.id == id))
         return result.scalar_one()
-    #TODO: Дописать
+
     async def create(self,db: AsyncSession, obj):
         obj_in_data = jsonable_encoder(obj)
         db_obj = self.model(**obj_in_data)
