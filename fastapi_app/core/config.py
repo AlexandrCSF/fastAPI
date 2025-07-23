@@ -7,18 +7,24 @@ from environs import Env
 class DatabaseConfig:
     database_url: str
 
+@dataclass
+class JWTAuthConfig:
+    access_token_lifetime: int
+    refresh_token_lifetime: int
 
 @dataclass
 class Config:
+    JWTAuthConfig: JWTAuthConfig
     DatabaseConfig: DatabaseConfig
-    secret_key: str
+    SECRET_KEY: str
     debug: bool
 
 
 env = Env()
 env.read_env()
 config = Config(
+    JWTAuthConfig=JWTAuthConfig(access_token_lifetime=600,refresh_token_lifetime=10000),
     DatabaseConfig=DatabaseConfig(database_url=env("DATABASE_URL")),
-    secret_key=env("SECRET_KEY"),
+    SECRET_KEY=env("SECRET_KEY"),
     debug=env.bool("DEBUG", default=False),
 )

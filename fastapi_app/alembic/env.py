@@ -9,6 +9,8 @@ from alembic import context
 
 from db.base_class import Base
 from core.config import config as default_settings, env
+from src.utils.models import import_models
+import_models()
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
