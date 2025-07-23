@@ -9,7 +9,7 @@ class BaseCRUDService:
         self.create_schema = create_schema
         self.update_schema = update_schema if update_schema else create_schema
 
-    async def get(self,db: AsyncSession, id: int):
+    async def get(self, db: AsyncSession, id: int):
         result = await db.execute(select(self.model).where(self.model.id == id))
         return result.scalar_one()
     #TODO: Дописать

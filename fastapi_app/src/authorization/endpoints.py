@@ -9,8 +9,8 @@ from src.utils.jwt import get_user
 router = APIRouter()
 
 @router.get('/user/',response_model=UserDTO)
-async def get_user_data(db: AsyncSession = Depends(get_db), user = Depends(get_user)):
-    return user
+async def get_user_data(user = Depends(get_user)):
+    return user.__dict__
 
 @router.post('/token/', response_model=ResponseTokenDTO)
 async def create_access_token(request_data: RequestTokenDTO, db: AsyncSession = Depends(get_db)):

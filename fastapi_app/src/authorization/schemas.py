@@ -1,14 +1,15 @@
 from datetime import datetime
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 
 class UserDTO(BaseModel):
     id: int
-    uuid: str
-    first_name: str
-    last_name: str
-    username: str
+    uuid: UUID
+    first_name: str = Field(default=None)
+    last_name: str = Field(default=None)
+    username: str = Field(default=None)
     is_verified: bool
     created_at: datetime
     updated_at: datetime
