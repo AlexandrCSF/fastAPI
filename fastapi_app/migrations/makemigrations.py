@@ -1,11 +1,8 @@
 from alembic import command
 from alembic.config import Config
-from src.utils.models import import_models
-
 
 def run_alembic_autogenerate():
     alembic_cfg = Config("alembic.ini")
-    import_models()
     try:
         command.revision(alembic_cfg, autogenerate=True, message="initial migration")
         print("Миграция успешно создана")

@@ -24,7 +24,11 @@ def custom_openapi():
         }
     }
 
-    openapi_schema["security"] = [{"Bearer": []}]
+    for path, methods in openapi_schema["paths"].items():
+        for method in methods.values():
+            if path == "/token/":
+                continue
+            method.setdefault("security", [{"Bearer": []}])
 
     app.openapi_schema = openapi_schema
     return app.openapi_schema

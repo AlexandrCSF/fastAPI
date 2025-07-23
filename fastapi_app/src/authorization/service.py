@@ -2,6 +2,8 @@ from sqlalchemy import select
 
 from src.authorization.models import UserModel
 from src.authorization.schemas import CreateUserDTO
+from src.authorization.schemas import ResponseTokenDTO
+from src.utils.jwt import create_token
 from src.utils.service import BaseCRUDService
 
 
@@ -13,7 +15,14 @@ class TokenService:
         user = await db.execute(select(UserModel).where(UserModel.uuid == uuid))
         user = user.scalar_one_or_none()
         if user is None:
-            user = await user_service.create(db,UserModel(uuid=uuid))
+            user = await user_service.create(db, UserModel(uuid=uuid))
+        token = await create_token(user)
+        return ResponseTokenDTO(
+            access_token=token['access_token'],
+            refresh_token=token['refresh_token'],
+            user_id=user.id,
+            user_uuid=str(user.uuid)
+        )
 
 token_service = TokenService()
 user_service = UserService(UserModel,CreateUserDTO)
