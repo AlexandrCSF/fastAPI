@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field
@@ -7,9 +8,9 @@ from pydantic import BaseModel, Field
 class UserDTO(BaseModel):
     id: int
     uuid: UUID
-    first_name: str = Field(default=None)
-    last_name: str = Field(default=None)
-    username: str = Field(default=None)
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
     is_verified: bool
     created_at: datetime
     updated_at: datetime
