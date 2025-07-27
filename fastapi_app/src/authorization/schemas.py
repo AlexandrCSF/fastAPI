@@ -17,9 +17,16 @@ class UserDTO(BaseModel):
 
 class CreateUserDTO(BaseModel):
     uuid: str
-    first_name: str
-    last_name: str
-    username: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+    is_verified: bool = Field(default=True)
+
+class UpdateUserDTO(BaseModel):
+    uuid: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
     is_verified: bool = Field(default=True)
 
 class RequestTokenDTO(BaseModel):

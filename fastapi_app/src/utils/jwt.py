@@ -25,7 +25,7 @@ async def get_user(db: AsyncSession = Depends(get_db), token: str = Depends(oaut
         data = TokenData(**payload)
     except JWTError:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Could not validate credentials")
-    user = await user_service.get(db, data.user_id)
+    user = await user_service.get(db, id=data.user_id)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user

@@ -1,9 +1,9 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.session import get_db
-from src.authorization.schemas import UserDTO, RequestTokenDTO, ResponseTokenDTO
-from src.authorization.service import token_service
+from src.authorization.schemas import UserDTO, RequestTokenDTO, ResponseTokenDTO, UpdateUserDTO
+from src.authorization.service import token_service, user_service
 from src.utils.jwt import get_user
 
 router = APIRouter()
@@ -11,6 +11,12 @@ router = APIRouter()
 @router.get('/user/',response_model=UserDTO)
 async def get_user_data(user = Depends(get_user)):
     return user.__dict__
+
+
+@router.patch('/user/',response_model=UserDTO)
+async def edit_user_data(db: AsyncSession = Depends(get_db), update_data: UpdateUserDTO = Body(...), user = Depends(get_user)):
+    return await user_service.edit(db=db, obj=user,edit_fields=update_data)
+
 
 @router.post('/token/', response_model=ResponseTokenDTO)
 async def create_access_token(request_data: RequestTokenDTO, db: AsyncSession = Depends(get_db)):
