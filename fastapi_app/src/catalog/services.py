@@ -1,3 +1,4 @@
-class ProductsService:
-    def get_product_card(self):
-        pass
+from src.catalog.models import ProductModel
+from src.utils.service import BaseCRUDService
+
+product_service = BaseCRUDService(ProductModel)

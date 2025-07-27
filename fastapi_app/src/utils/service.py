@@ -1,10 +1,10 @@
-from typing import TypeVar, Generic, Type, Optional
+from typing import TypeVar, Generic, Type
 
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import select
-from sqlalchemy.event import remove
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.base_class import Base
@@ -20,7 +20,18 @@ class BaseCRUDService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     async def get(self, db: AsyncSession, *, id: int) -> ModelType:
         elem = await db.execute(select(self.model).where(self.model.id == id))
-        return elem.scalar_one()
+        try:
+            return elem.scalar_one()
+        except NoResultFound:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Record with id {id} not found"
+            )
+        except MultipleResultsFound:
+            raise HTTPException(
+                status_code=401,
+                detail=f"Multiple results found"
+            )
 
     async def create(self, db: AsyncSession, *, obj: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj)
@@ -44,7 +55,10 @@ class BaseCRUDService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def remove(self, db: AsyncSession, *, id: int) -> ModelType:
         elem = await db.execute(select(self.model).where(self.model.id == id))
         if not elem:
-            raise NoResultFound(f'No such record with id: {id}')
+            raise HTTPException(
+                status_code=404,
+                detail=f"Record with id {id} not found"
+            )
         await db.delete(elem)
         await db.commit()
         return elem

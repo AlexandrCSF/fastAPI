@@ -1,14 +1,9 @@
 from sqlalchemy import select
 
 from src.authorization.models import UserModel
-from src.authorization.schemas import CreateUserDTO
 from src.authorization.schemas import ResponseTokenDTO
 from src.utils.jwt import create_token
 from src.utils.service import BaseCRUDService
-
-
-class UserService(BaseCRUDService):
-    pass
 
 class TokenService:
     async def gen_token(self, db, uuid):
@@ -25,4 +20,4 @@ class TokenService:
         )
 
 token_service = TokenService()
-user_service = UserService(UserModel)
+user_service = BaseCRUDService(UserModel)
