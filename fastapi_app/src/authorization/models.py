@@ -19,3 +19,4 @@ class UserModel(Base):
     is_verified: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
+    refresh_token: Mapped[str] = mapped_column(String(200),nullable=True,default=None)

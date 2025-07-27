@@ -23,7 +23,7 @@ class Config:
 env = Env()
 env.read_env()
 config = Config(
-    JWTAuthConfig=JWTAuthConfig(access_token_lifetime=600,refresh_token_lifetime=10000),
+    JWTAuthConfig=JWTAuthConfig(access_token_lifetime=3600,refresh_token_lifetime=36000),
     DatabaseConfig=DatabaseConfig(database_url=env("DATABASE_URL")),
     SECRET_KEY=env("SECRET_KEY"),
     debug=env.bool("DEBUG", default=False),

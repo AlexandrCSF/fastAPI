@@ -12,6 +12,10 @@ class TokenService:
         if user is None:
             user = await user_service.create(db, obj=UserModel(uuid=uuid))
         token = await create_token(user)
+        user.refresh_token = token['refresh_token']
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
         return ResponseTokenDTO(
             access_token=token['access_token'],
             refresh_token=token['refresh_token'],

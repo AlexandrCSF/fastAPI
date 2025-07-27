@@ -14,6 +14,7 @@ class UserDTO(BaseModel):
     is_verified: bool
     created_at: datetime
     updated_at: datetime
+    refresh_token: Optional[str] = None
 
 class CreateUserDTO(BaseModel):
     uuid: str
