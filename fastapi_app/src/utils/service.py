@@ -18,7 +18,7 @@ class BaseCRUDService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
 
-    async def get(self, db: AsyncSession, *, id: int) -> Optional[ModelType]:
+    async def get(self, db: AsyncSession, *, id: int) -> ModelType:
         elem = await db.execute(select(self.model).where(self.model.id == id))
         return elem.scalar_one()
 
