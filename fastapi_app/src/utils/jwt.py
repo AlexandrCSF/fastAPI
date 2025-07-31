@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timezone, timedelta
 
 from fastapi import Depends, HTTPException
@@ -29,6 +30,13 @@ async def get_user(db: AsyncSession = Depends(get_db), token: str = Depends(oaut
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user
+
+def is_valid_uuid(uuid_str):
+    try:
+        uuid_obj = uuid.UUID(uuid_str)
+        return str(uuid_obj) == uuid_str
+    except ValueError:
+        return False
 
 async def create_token(user: UserModel):
     now = datetime.now(timezone.utc)

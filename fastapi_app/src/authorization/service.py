@@ -1,12 +1,15 @@
+from fastapi import HTTPException
 from sqlalchemy import select
 
 from src.authorization.models import UserModel
 from src.authorization.schemas import ResponseTokenDTO
-from src.utils.jwt import create_token
+from src.utils.jwt import create_token, is_valid_uuid
 from src.utils.service import BaseCRUDService
 
 class TokenService:
-    async def gen_token(self, db, uuid):
+    async def gen_token(self, db, *, uuid):
+        if not is_valid_uuid(uuid):
+            raise HTTPException(status_code=401,detail="Input valid UUID")
         user = await db.execute(select(UserModel).where(UserModel.uuid == uuid))
         user = user.scalar_one_or_none()
         if user is None:

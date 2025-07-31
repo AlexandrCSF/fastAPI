@@ -13,7 +13,6 @@ async def send_message(message: Message):
     await produce_message(message.topic, message.data)
     return {"status": "Сообщение отправлено в Kafka!"}
 
-# Чтение сообщений через WebSocket (реальный времени)
 @router.websocket("/ws/{topic}")
 async def websocket_kafka(websocket: WebSocket, topic: str):
     await websocket.accept()

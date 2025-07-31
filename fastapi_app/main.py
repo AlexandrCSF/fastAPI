@@ -5,11 +5,13 @@ from fastapi.openapi.utils import get_openapi
 from src.authorization.endpoints import router as user_router
 from src.catalog.endpoints import router as product_router
 from src.kafka_tests.endpoints import router as kafka_router
+from src.blog.endpoints import router as blog_router
 
 app = FastAPI()
 app.include_router(user_router)
 app.include_router(product_router)
 app.include_router(kafka_router)
+app.include_router(blog_router)
 
 def custom_openapi():
     openapi_schema = get_openapi(
