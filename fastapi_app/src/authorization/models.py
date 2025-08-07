@@ -21,3 +21,4 @@ class UserModel(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
     refresh_token: Mapped[str] = mapped_column(String(200),nullable=True,default=None)
     articles = relationship("ArticleModel", back_populates="author")
+    comments = relationship("CommentModel", back_populates="author")

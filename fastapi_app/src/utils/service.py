@@ -20,6 +20,7 @@ class BaseCRUDService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def get_multi(self, db: AsyncSession, * , offset: int = 0, limit: int = 20) -> List[ModelType]:
         result = await db.execute(select(self.model).offset(offset).limit(limit))
         return result.scalars().all()
+
     async def get(self, db: AsyncSession, *, id: int) -> ModelType:
         elem = await db.execute(select(self.model).where(self.model.id == id))
         try:
