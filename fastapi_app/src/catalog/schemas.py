@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from src.authorization.schemas import UserDTO
 
@@ -9,11 +9,14 @@ from src.authorization.schemas import UserDTO
 class ProductCardRequestDTO(BaseModel):
     id: int
 
+
 class ProductCardDTO(BaseModel):
+
     id: int
     name: str
     price: int
     description: Optional[str]
+
 
 class CommentDTO(BaseModel):
     id: int
@@ -23,10 +26,10 @@ class CommentDTO(BaseModel):
     author: UserDTO
     parent_id: Optional[int]
     product: ProductCardDTO
+    replies: List["CommentDTO"] = []
 
 class CommentCreateDTO(BaseModel):
-    text: Optional[str]
+    text: Optional[str] = None
     rating: int
-
-class CommentTreeDTO(CommentDTO):
-    replies: List["CommentDTO"] = []
+    product_id: int
+    parent_id: Optional[int] = None

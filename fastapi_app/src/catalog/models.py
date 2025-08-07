@@ -16,7 +16,7 @@ class ProductModel(Base):
 class CommentModel(Base):
     __tablename__ = "commentmodel"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    text: Mapped[str] = mapped_column(Text,default=None)
+    text: Mapped[str] = mapped_column(Text,default=None,nullable=True)
     rating: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now())
 
@@ -24,11 +24,11 @@ class CommentModel(Base):
     author_id: Mapped[int] = mapped_column(ForeignKey("usermodel.id"))
 
     parent_id: Mapped[int | None] = mapped_column(ForeignKey("commentmodel.id"), nullable=True)
-    parent: Mapped["CommentModel"] = relationship(back_populates="replies")
+    parent: Mapped["CommentModel"] = relationship(back_populates="replies", remote_side=[id])
     replies: Mapped[list["CommentModel"]] = relationship(
         back_populates="parent",
-        remote_side=[id],
-        cascade="all"
+        cascade="all",
+        lazy="selectin"
     )
 
     product = relationship("ProductModel",back_populates="comments",lazy="selectin")
